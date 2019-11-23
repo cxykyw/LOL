@@ -150,7 +150,8 @@ public class HerosEntity {
             enemy.setHp(enemy.getHp()-this.skillsVal);
             this.setMp(this.getMp()-this.getSkillCost());
         }else{
-            System.out.println("MP值不够，无法发动技能！");
+            System.out.println("MP值不够，无法发动技能！本次为普通攻击！");
+            enemy.setHp(enemy.getHp()-this.getAd());
         }
     }
 }

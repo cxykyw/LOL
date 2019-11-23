@@ -38,7 +38,7 @@ public class LeagueOfLegends {
                 break;
             }
 
-            gameBegin(myHero, enemyHero);
+            gameBegin(myHero, enemyHero,sc);
             System.out.println("是否继续：1.继续，2.退出");
             String line3 = sc.nextLine();
             if("2".equals(line3)){
@@ -53,7 +53,7 @@ public class LeagueOfLegends {
      * @param h1
      * @param h2
      */
-    public static void gameBegin(HerosEntity h1,HerosEntity h2){
+    /*public static void gameBegin(HerosEntity h1,HerosEntity h2){
         System.out.println("初始数值，"+h1.getName()+"HP:"+h1.getHp()+",MP:"+h1.getMp()+",AD:"+h1.getAd());
         System.out.println("初始数值，"+h2.getName()+"HP:"+h2.getHp()+",MP:"+h2.getMp()+",AD:"+h2.getAd());
         System.out.println("对局开始，"+h1.getName()+"先手攻击！");
@@ -93,9 +93,66 @@ public class LeagueOfLegends {
                 break;
             }
         }
+    }*/
+
+    /**
+     * 对战细节描述
+     * @param h1
+     * @param h2
+     */
+    public static void gameBegin(HerosEntity h1,HerosEntity h2,Scanner sc){
+
+
+        System.out.println("初始数值，"+h1.getName()+"HP:"+h1.getHp()+",MP:"+h1.getMp()+",AD:"+h1.getAd());
+        System.out.println("初始数值，"+h2.getName()+"HP:"+h2.getHp()+",MP:"+h2.getMp()+",AD:"+h2.getAd());
+        System.out.println("对局开始，"+h1.getName()+"先手攻击！");
+        while (true) {
+            System.out.println("玩家-"+h1.getName()+"-1,请选择①.普通攻击，②.技能");
+            String line3 = sc.nextLine();
+
+            boolean flag =  attackDetail(h1,h2,line3);
+            if(flag){
+               break;
+            }
+
+            System.out.println("玩家-"+h2.getName()+"-2,请选择①.普通攻击，②.技能");
+            String line4 = sc.nextLine();
+
+            boolean flag2 =  attackDetail(h2,h1,line4);
+            if(flag2){
+               break;
+            }
+        }
     }
 
+    private static boolean attackDetail(HerosEntity ownHero,HerosEntity enemyHero,String attackType){
+        final String normalAttack = "1";
+        final String skillAttack = "2";
 
+        if(normalAttack.equals(attackType)){
+            System.out.println("====" + ownHero.getName() + ":攻击了" + enemyHero.getName() + ",造成了'" + ownHero.getAd() + "'点伤害");
+            enemyHero.beAttacked(ownHero.getAd());
+        }else if(skillAttack.equals(attackType)) {
+            ownHero.releaseSkills(enemyHero);
+        }else{
+            System.out.println("输入数字不正确，本次对局结束！");
+            return true;
+        }
+
+        System.out.println("====攻击结束，剩余血量：" + ownHero.getName() + "为" + ownHero.getHp() + "," + enemyHero.getName() + "为" + enemyHero.getHp());
+        System.out.println("=================================================");
+
+        if(ownHero.getHp()<0){
+            System.out.println(enemyHero.getName()+"击杀了"+ownHero.getName());
+            System.out.println("恕我直言你就是个辣鸡~_~╮︶﹏︶╭！！！！");
+            return true;
+        }else if(enemyHero.getHp()<0){
+            System.out.println(ownHero.getName()+"击杀了"+enemyHero.getName());
+            System.out.println("哇，你好棒哦=( °∀° )！！！！");
+            return true;
+        }
+        return false;
+    }
     /**
      * 暴击翻倍
      */
